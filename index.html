@@ -204,14 +204,19 @@ svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-widt
 .lien-recap small { font-size: 13px; color: var(--gris); }
 .lien-recap b { font-size: 20px; font-weight: 600; }
 .tuiles { flex: 1; min-height: 0; overflow-y: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; align-content: start; padding-bottom: max(20px, env(safe-area-inset-bottom)); }
-.tuile { position: relative; height: 116px; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--trait); background: var(--surface); color: var(--encre); text-align: left; }
+.tuile { position: relative; height: 128px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px; border-radius: 14px; border: 1px solid var(--trait); background: var(--surface); color: var(--encre); text-align: left; }
 .tuile.dans { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
 .tuile:disabled { background: var(--neutre-fond); color: var(--gris); }
-.tuile .nom { padding-right: 32px; font-size: 15px; font-weight: 600; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.tuile-haut { display: flex; align-items: flex-start; gap: 10px; width: 100%; }
+.tuile-photo { position: relative; width: 48px; height: 48px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--panneau); color: #9C958A; }
+.tuile-photo img { width: 100%; height: 100%; border-radius: 10px; object-fit: cover; }
+.tuile-photo svg.i { width: 20px; height: 20px; }
+.tuile:disabled .tuile-photo img { opacity: 0.5; }
+.tuile .nom { flex: 1; min-width: 0; font-size: 14.5px; font-weight: 600; line-height: 1.22; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
 .tuile .prix { margin-top: auto; font-family: var(--serif); font-size: 21px; font-weight: 600; }
 .tuile .stk { font-size: 12.5px; font-weight: 500; color: var(--gris); white-space: nowrap; }
 .tuile .stk.bas { color: var(--alerte); }
-.tuile .qte { position: absolute; top: 8px; right: 8px; min-width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; padding: 0 8px; border-radius: 14px; background: var(--accent); color: #FFFFFF; font-size: 14px; font-weight: 600; }
+.tuile .qte { position: absolute; top: -8px; right: -8px; min-width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; padding: 0 7px; border-radius: 13px; border: 2px solid var(--surface); background: var(--accent); color: #FFFFFF; font-size: 13px; font-weight: 600; }
 .ticket { width: 388px; flex-shrink: 0; display: flex; flex-direction: column; background: var(--surface); border-left: 1px solid var(--trait); }
 .ticket-tete { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 22px 22px 14px; border-bottom: 1px solid var(--trait-doux); }
 .ticket-tete h2 { margin: 0; font-family: var(--serif); font-size: 24px; font-weight: 600; }
@@ -219,9 +224,13 @@ svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-widt
 .message-ok svg.i { width: 18px; height: 18px; }
 .lignes { flex: 1; min-height: 0; overflow-y: auto; padding: 4px 22px; }
 .ligne { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--trait-doux); }
-.ligne .txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ligne .txt { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 44px; padding: 0; border: 0; background: none; color: var(--encre); text-align: left; }
 .ligne .txt b { font-size: 15px; font-weight: 600; line-height: 1.25; }
 .ligne .txt small { font-size: 13px; color: var(--gris); }
+.ligne .txt .lien-txt, .ligne .txt .remise-txt { display: inline-flex; align-items: center; gap: 4px; color: var(--accent); font-weight: 600; }
+.ligne .txt .lien-txt svg.i, .ligne .txt .remise-txt svg.i { width: 14px; height: 14px; }
+.ligne .mt { display: flex; flex-direction: column; align-items: flex-end; }
+.ligne .mt s { font-size: 12.5px; font-weight: 400; color: var(--gris); }
 .ligne .stepper { gap: 4px; }
 .ligne .stepper span { min-width: 28px; text-align: center; font-size: 17px; font-weight: 600; }
 .ligne .mt { width: 78px; flex-shrink: 0; text-align: right; font-size: 15px; font-weight: 600; }
@@ -351,7 +360,7 @@ svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-widt
 (() => {
 'use strict';
 
-const VERSION = '1.1.0';
+const VERSION = '1.2.0';
 
 /* ---------- Constantes ---------- */
 
@@ -639,44 +648,74 @@ const categories = () => [...new Set(actifs().map((a) => a.cat).filter(Boolean))
 const etatStock = (a) => (a.qte <= 0 ? 'rupture' : a.qte <= a.seuil ? 'bas' : 'ok');
 const jourOuvert = () => etat.jours.find((j) => !j.cloture) || null;
 const jourDu = (date) => etat.jours.find((j) => j.date === date) || null;
-// Montant encaissé : total des lignes, moins la remise éventuelle du ticket.
-const totalTicket = (t) => r2(t.lignes.reduce((s, l) => s + r2(l.pv * l.q), 0) - (t.remise ? t.remise.montant : 0));
+// Montant d’une ligne vendue : prix × quantité, moins sa remise article éventuelle.
+const netLigne = (l) => r2(r2(l.pv * l.q) - (l.remise ? l.remise.montant : 0));
+// Montant encaissé : lignes (remises articles déduites), moins la remise éventuelle du ticket.
+const totalTicket = (t) => r2(t.lignes.reduce((s, l) => s + netLigne(l), 0) - (t.remise ? t.remise.montant : 0));
 // Remise calculée en centimes entiers et arrondie au centime le plus proche (8,655 € → 8,66 €).
 const montantRemise = (brut, pct) => (pct ? Math.round((Math.round(brut * 100) * Math.round(pct * 100)) / 10000) / 100 : 0);
-const calculTicket = (lignes, pct) => {
-  const brut = r2(lignes.reduce((s, l) => s + r2(pv(l.a) * l.q), 0));
-  const montant = montantRemise(brut, pct);
-  return { brut, montant, net: r2(brut - montant) };
+// Ticket en cours, en cascade : remises articles d’abord, puis remise du ticket sur le sous-total.
+const calculTicket = (lignes, pctTicket) => {
+  const details = lignes.map((l) => {
+    const brut = r2(pv(l.a) * l.q);
+    const remiseMt = montantRemise(brut, l.remise);
+    return { ...l, brut, remiseMt, net: r2(brut - remiseMt) };
+  });
+  const sousTotal = r2(details.reduce((s, l) => s + l.net, 0));
+  const montant = montantRemise(sousTotal, pctTicket);
+  return { details, sousTotal, montant, net: r2(sousTotal - montant) };
 };
+// Une ligne du ticket en cours : { cle, id, q, remise }. Un même article peut occuper deux lignes,
+// l’une remisée et l’autre non (ex. 1 mug ébréché remisé sur 3).
 const lignesTicket = () => ui.caisse.lignes.map((l) => ({ ...l, a: article(l.id) })).filter((l) => l.a);
 const articleVendu = (id) => etat.jours.some((j) => j.tickets.some((t) => t.lignes.some((l) => l.id === id)));
-const qteDansTicket = (id) => (ui.caisse.lignes.find((l) => l.id === id) || { q: 0 }).q;
+const qteDansTicket = (id) => ui.caisse.lignes.filter((l) => l.id === id).reduce((s, l) => s + l.q, 0);
 const nouvelId = () => 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const nouvelleCle = () => 'l' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+
+// Fusionne les lignes d’un même article portant la même remise et supprime les lignes vides.
+function regrouperLignes() {
+  const lignes = [];
+  ui.caisse.lignes.forEach((l) => {
+    if (l.q <= 0) return;
+    const remise = l.remise || null;
+    const meme = lignes.find((x) => x.id === l.id && x.remise === remise);
+    if (meme) meme.q += l.q;
+    else lignes.push({ cle: l.cle || nouvelleCle(), id: l.id, q: l.q, remise });
+  });
+  ui.caisse.lignes = lignes;
+  if (!lignes.length) ui.caisse.remise = null;
+}
 
 function resumeJour(j) {
   const modes = {};
   MODES.forEach((m) => { modes[m.id] = { n: 0, m: 0 }; });
   const vendus = {};
-  let total = 0, cout = 0, units = 0, n = 0, annules = 0, remises = 0, nbRemises = 0;
+  let total = 0, cout = 0, units = 0, n = 0, annules = 0;
+  const remises = { articles: 0, nbArticles: 0, tickets: 0, nbTickets: 0 };
   j.tickets.forEach((t) => {
     if (t.annule) { annules += 1; return; }
     n += 1;
     const tt = totalTicket(t);
     total += tt;
-    if (t.remise) { remises += t.remise.montant; nbRemises += 1; }
+    if (t.remise) { remises.tickets += t.remise.montant; remises.nbTickets += 1; }
     const m = modes[t.mode] || modes.AUT;
     m.n += 1;
     m.m += tt;
     t.lignes.forEach((l) => {
       cout += l.pa * l.q;
       units += l.q;
+      if (l.remise) { remises.articles += l.remise.montant; remises.nbArticles += 1; }
+      // Montants des articles vendus avant remises : les remises sont détaillées à part.
       const v = vendus[l.id] || (vendus[l.id] = { nom: l.nom, q: 0, m: 0 });
       v.q += l.q;
       v.m += r2(l.pv * l.q);
     });
   });
+  remises.articles = r2(remises.articles);
+  remises.tickets = r2(remises.tickets);
   return {
-    total: r2(total), cout, marge: total - cout, units, n, annules, modes, remises: r2(remises), nbRemises,
+    total: r2(total), cout, marge: total - cout, units, n, annules, modes, remises,
     vendus: Object.values(vendus).sort((a, b) => b.q - a.q || b.m - a.m)
   };
 }
@@ -1147,10 +1186,12 @@ function tuiles() {
     const bas = !epuise && reste <= a.seuil;
     const sous = a.qte <= 0 ? 'Rupture' : epuise ? 'Plus de stock' : `Stock : ${reste}${bas ? ' · bas' : ''}`;
     return `<button type="button" class="tuile${dans ? ' dans' : ''}" data-action="ajouter" data-id="${a.id}"${epuise ? ' disabled' : ''}>
-      <span class="nom">${esc(a.nom)}</span>
+      <span class="tuile-haut">
+        <span class="tuile-photo">${photoURL[a.id] ? `<img src="${photoURL[a.id]}" alt="">` : ico('stock')}${dans ? `<span class="qte num">×${dans}</span>` : ''}</span>
+        <span class="nom">${esc(a.nom)}</span>
+      </span>
       <span class="stk num${bas ? ' bas' : ''}">${sous}</span>
       <span class="prix num">${fmtEur(pv(a))}</span>
-      ${dans ? `<span class="qte num">×${dans}</span>` : ''}
     </button>`;
   }).join('');
 }
@@ -1158,12 +1199,12 @@ function tuiles() {
 function ticketEnCours(j) {
   const lignes = lignesTicket();
   const remise = lignes.length ? ui.caisse.remise : null;
-  const { brut, montant, net } = calculTicket(lignes, remise);
+  const { details, sousTotal, montant, net } = calculTicket(lignes, remise);
   const units = lignes.reduce((s, l) => s + l.q, 0);
   let blocRemise = '';
   if (lignes.length && remise) {
     blocRemise = `<div class="ticket-remise">
-      <div class="l"><span>Sous-total</span><span class="num">${fmtEur(brut)}</span></div>
+      <div class="l"><span>Sous-total</span><span class="num">${fmtEur(sousTotal)}</span></div>
       <div class="l">
         <button type="button" class="lien-remise" data-action="remise">${ico('pourcent')}Remise ${fmtPct(remise / 100)}</button>
         <span class="num remise-mt">−${fmtEur(montant)}</span>
@@ -1171,20 +1212,27 @@ function ticketEnCours(j) {
       </div>
     </div>`;
   } else if (lignes.length) {
-    blocRemise = `<div class="ticket-remise"><button type="button" class="btn-remise" data-action="remise">${ico('pourcent')}Ajouter une remise</button></div>`;
+    blocRemise = `<div class="ticket-remise"><button type="button" class="btn-remise" data-action="remise">${ico('pourcent')}Remise sur tout le ticket</button></div>`;
   }
   const pret = lignes.length > 0 && !!ui.caisse.mode;
   const corps = lignes.length
-    ? lignes.map((l) => {
+    ? details.map((l) => {
       const p = pv(l.a);
+      const complet = qteDansTicket(l.id) >= l.a.qte;
       return `<div class="ligne">
-        <div class="txt"><b>${esc(l.a.nom)}</b><small class="num">${fmtEur(p)} × ${l.q}</small></div>
+        <button type="button" class="txt" data-action="remise-ligne" data-cle="${l.cle}" aria-label="${esc(l.a.nom)} : remise sur cet article">
+          <b>${esc(l.a.nom)}</b>
+          <small class="num">${fmtEur(p)} × ${l.q}</small>
+          ${l.remise
+            ? `<small class="num remise-txt">${ico('pourcent')}Remise ${fmtPct(l.remise / 100)}</small>`
+            : `<small class="lien-txt">${ico('pourcent')}Remise</small>`}
+        </button>
         <div class="stepper">
-          <button type="button" data-action="retirer" data-id="${l.id}" aria-label="Retirer une unité">${ico('moins', 18)}</button>
+          <button type="button" data-action="moins-ligne" data-cle="${l.cle}" aria-label="Retirer une unité">${ico('moins', 18)}</button>
           <span class="num">${l.q}</span>
-          <button type="button" data-action="ajouter" data-id="${l.id}" aria-label="Ajouter une unité"${l.q >= l.a.qte ? ' disabled' : ''}>${ico('plus', 18)}</button>
+          <button type="button" data-action="plus-ligne" data-cle="${l.cle}" aria-label="Ajouter une unité"${complet ? ' disabled' : ''}>${ico('plus', 18)}</button>
         </div>
-        <span class="mt num">${fmtEur(p * l.q)}</span>
+        <span class="mt num">${l.remise ? `<s>${fmtEur(l.brut)}</s>` : ''}${fmtEur(l.net)}</span>
       </div>`;
     }).join('')
     : `<div class="ticket-vide">${ico('vente')}<span>Touchez un article pour l’ajouter au ticket.</span></div>`;
@@ -1214,46 +1262,61 @@ function majCaisse() {
   $('#caisse-recap').innerHTML = recapCaisse(j);
 }
 
+// Toucher une tuile ajoute un exemplaire sur la ligne non remisée de l’article.
 function ajouterAuTicket(id) {
   const a = article(id);
   if (!a) return;
-  const ligne = ui.caisse.lignes.find((l) => l.id === id);
-  const dans = ligne ? ligne.q : 0;
-  if (a.qte - dans <= 0) { toast(`Plus de stock pour « ${a.nom} ».`, true); return; }
-  if (ligne) ligne.q += 1; else ui.caisse.lignes.push({ id, q: 1 });
+  if (a.qte - qteDansTicket(id) <= 0) { toast(`Plus de stock pour « ${a.nom} ».`, true); return; }
+  const ligne = ui.caisse.lignes.find((l) => l.id === id && !l.remise);
+  if (ligne) ligne.q += 1; else ui.caisse.lignes.push({ cle: nouvelleCle(), id, q: 1, remise: null });
   ui.caisse.message = '';
   sauverBrouillon();
   majCaisse();
 }
 
-function retirerDuTicket(id) {
-  const ligne = ui.caisse.lignes.find((l) => l.id === id);
+function changerQteLigne(cle, sens) {
+  const ligne = ui.caisse.lignes.find((l) => l.cle === cle);
   if (!ligne) return;
-  ligne.q -= 1;
-  if (ligne.q <= 0) ui.caisse.lignes = ui.caisse.lignes.filter((l) => l.id !== id);
-  if (!ui.caisse.lignes.length) ui.caisse.remise = null;
+  if (sens > 0) {
+    const a = article(ligne.id);
+    if (!a || a.qte - qteDansTicket(ligne.id) <= 0) { toast(`Plus de stock pour « ${a ? a.nom : 'cet article'} ».`, true); return; }
+  }
+  ligne.q += sens;
+  regrouperLignes();
   sauverBrouillon();
   majCaisse();
 }
 
-const apercuRemise = (brut, pct) => {
+/* Remises : la même fenêtre sert pour le ticket entier et pour un article. */
+
+function apercuRemise(pct) {
+  const e = ui.remiseEdition;
+  if (!e) return '';
   if (!(pct > 0 && pct <= 100)) return 'Par exemple, tapez 10 pour une remise de 10 %.';
-  const montant = montantRemise(brut, pct);
-  return `Remise : −${fmtEur(montant)} · nouveau total : ${fmtEur(brut - montant)}`;
-};
+  if (e.cible === 'ticket') {
+    const m = montantRemise(e.base, pct);
+    return `Remise : −${fmtEur(m)} · nouveau total : ${fmtEur(e.base - m)}`;
+  }
+  const brut = r2(e.pu * e.n);
+  const m = montantRemise(brut, pct);
+  return `${e.n > 1 ? pl(e.n, 'exemplaire') + ' · ' : ''}Remise : −${fmtEur(m)} · prix remisé : ${fmtEur(brut - m)}`;
+}
+const majApercuRemise = () => { $('#remise-apercu').textContent = apercuRemise(lireNombre($('#remise-pct').value)); };
+
+const champRemise = (pct) => `<label class="champ gros">Pourcentage de remise
+    <span class="unite"><input type="text" inputmode="decimal" class="num" id="remise-pct" data-input="remise" value="${pct ? fmtNombre(pct) : ''}" placeholder="10" autocomplete="off" enterkeyhint="done" data-focus><span>%</span></span>
+  </label>`;
 
 function dialogueRemise() {
   const lignes = lignesTicket();
   if (!lignes.length) return;
-  const { brut } = calculTicket(lignes, 0);
-  ui.remiseBrut = brut;
+  const { sousTotal } = calculTicket(lignes, 0);
+  ui.remiseEdition = { cible: 'ticket', base: sousTotal };
   ouvrirModale(`<div class="dialogue" role="dialog" aria-modal="true" aria-labelledby="d-titre">
-    <h2 id="d-titre">Remise sur le ticket</h2>
-    <p>Sous-total : <b class="num">${fmtEur(brut)}</b>. Saisissez le pourcentage de remise accordé au client.</p>
-    <label class="champ gros">Pourcentage de remise
-      <span class="unite"><input type="text" inputmode="decimal" class="num" id="remise-pct" data-input="remise" value="${ui.caisse.remise ? fmtNombre(ui.caisse.remise) : ''}" placeholder="10" autocomplete="off" enterkeyhint="done" data-focus><span>%</span></span>
-    </label>
-    <p class="info num" id="remise-apercu">${apercuRemise(brut, ui.caisse.remise)}</p>
+    <h2 id="d-titre">Remise sur tout le ticket</h2>
+    <p>Sous-total : <b class="num">${fmtEur(sousTotal)}</b>${lignes.some((l) => l.remise) ? ', remises sur articles déjà déduites' : ''}. Saisissez le pourcentage de remise accordé au client.</p>
+    ${champRemise(ui.caisse.remise)}
+    <p class="info num" id="remise-apercu">${apercuRemise(ui.caisse.remise)}</p>
     <div class="boutons">
       <button type="button" class="btn" data-action="fermer-modale">Annuler</button>
       <button type="button" class="btn btn-principal" data-action="appliquer-remise">Appliquer la remise</button>
@@ -1261,13 +1324,65 @@ function dialogueRemise() {
   </div>`);
 }
 
+function dialogueRemiseLigne(cle) {
+  const l = lignesTicket().find((x) => x.cle === cle);
+  if (!l) return;
+  const p = pv(l.a);
+  ui.remiseEdition = { cible: 'ligne', cle, pu: p, qMax: l.q, n: l.q };
+  const compteurN = l.q > 1 ? `<div class="compteur">
+      <span id="l-remise-n">Exemplaires remisés<small class="gris" style="display:block;font-weight:400;font-size:13px">sur ${l.q} dans le ticket</small></span>
+      <div class="stepper">
+        <button type="button" data-action="remise-n" data-sens="-1" aria-label="Un exemplaire de moins" disabled>${ico('moins')}</button>
+        <output class="num" id="remise-n" aria-labelledby="l-remise-n">${l.q}</output>
+        <button type="button" data-action="remise-n" data-sens="1" aria-label="Un exemplaire de plus" disabled>${ico('plus')}</button>
+      </div>
+    </div>` : '';
+  ouvrirModale(`<div class="dialogue" role="dialog" aria-modal="true" aria-labelledby="d-titre">
+    <h2 id="d-titre">Remise sur un article</h2>
+    <p><b>${esc(l.a.nom)}</b> · ${fmtEur(p)} l’unité</p>
+    ${champRemise(l.remise)}
+    ${compteurN}
+    <p class="info num" id="remise-apercu">${apercuRemise(l.remise)}</p>
+    <div class="boutons">
+      ${l.remise ? '<button type="button" class="btn btn-discret" style="margin-right:auto" data-action="retirer-remise-ligne">Retirer la remise</button>' : ''}
+      <button type="button" class="btn" data-action="fermer-modale">Annuler</button>
+      <button type="button" class="btn btn-principal" data-action="appliquer-remise">Appliquer la remise</button>
+    </div>
+  </div>`);
+  majCompteurRemise();
+}
+
+function majCompteurRemise() {
+  const e = ui.remiseEdition;
+  if (!e || e.cible !== 'ligne' || !$('#remise-n')) return;
+  $('#remise-n').textContent = e.n;
+  modale.querySelector('[data-action="remise-n"][data-sens="-1"]').disabled = e.n <= 1;
+  modale.querySelector('[data-action="remise-n"][data-sens="1"]').disabled = e.n >= e.qMax;
+}
+
 function appliquerRemise() {
+  const e = ui.remiseEdition;
   const pct = lireNombre($('#remise-pct').value);
+  if (!e) return;
   if (!(pct > 0 && pct <= 100)) {
     toast('Indiquez un pourcentage de remise entre 0 et 100, par exemple 10.', true);
     return;
   }
-  ui.caisse.remise = r2(pct);
+  if (e.cible === 'ticket') {
+    ui.caisse.remise = r2(pct);
+  } else {
+    const ligne = ui.caisse.lignes.find((l) => l.cle === e.cle);
+    if (!ligne) { fermerModale(); return; }
+    const n = Math.min(e.n, ligne.q);
+    if (n >= ligne.q) {
+      ligne.remise = r2(pct);
+    } else {
+      // Seule une partie des exemplaires est remisée : la ligne est scindée en deux.
+      ligne.q -= n;
+      ui.caisse.lignes.splice(ui.caisse.lignes.indexOf(ligne) + 1, 0, { cle: nouvelleCle(), id: ligne.id, q: n, remise: r2(pct) });
+    }
+    regrouperLignes();
+  }
   ui.caisse.message = '';
   sauverBrouillon();
   fermerModale();
@@ -1277,30 +1392,33 @@ function appliquerRemise() {
 function validerTicket() {
   const j = jourOuvert();
   if (!j) return;
-  const lignes = ui.caisse.lignes.filter((l) => article(l.id));
+  const lignes = lignesTicket();
   if (!lignes.length || !ui.caisse.mode) return;
-  for (const l of lignes) {
-    const a = article(l.id);
-    if (a.qte < l.q) { toast(`Stock insuffisant pour « ${a.nom} » : ${a.qte} restant.`, true); return; }
+  for (const id of new Set(lignes.map((l) => l.id))) {
+    const a = article(id);
+    if (a.qte < qteDansTicket(id)) { toast(`Stock insuffisant pour « ${a.nom} » : ${a.qte} restant.`, true); return; }
   }
   const pct = ui.caisse.remise;
-  const { montant } = calculTicket(lignesTicket(), pct);
+  const calcul = calculTicket(lignes, pct);
   const ticket = {
     n: j.tickets.length + 1,
     h: maintenant(),
     mode: ui.caisse.mode,
-    lignes: lignes.map((l) => {
-      const a = article(l.id);
-      a.qte -= l.q;
-      return { id: a.id, ref: a.ref || '', nom: a.nom, pa: a.pa, pv: pv(a), q: l.q };
+    lignes: calcul.details.map((l) => {
+      l.a.qte -= l.q;
+      return {
+        id: l.a.id, ref: l.a.ref || '', nom: l.a.nom, pa: l.a.pa, pv: pv(l.a), q: l.q,
+        remise: l.remise ? { pct: l.remise, montant: l.remiseMt } : null
+      };
     }),
-    remise: pct ? { pct, montant } : null,
+    remise: pct ? { pct, montant: calcul.montant } : null,
     annule: null
   };
   j.tickets.push(ticket);
   sauverJour(j);
   sauverArticles();
-  ui.caisse.message = `Ticket n° ${ticket.n} enregistré · ${fmtEur(totalTicket(ticket))}${pct ? ` (remise ${fmtPct(pct / 100)})` : ''} · ${MODE_LABEL[ticket.mode]}`;
+  const remisee = pct || ticket.lignes.some((l) => l.remise);
+  ui.caisse.message = `Ticket n° ${ticket.n} enregistré · ${fmtEur(totalTicket(ticket))}${remisee ? ' (remise incluse)' : ''} · ${MODE_LABEL[ticket.mode]}`;
   ui.caisse.lignes = [];
   ui.caisse.mode = null;
   ui.caisse.remise = null;
@@ -1339,8 +1457,8 @@ function detailJour(j) {
   const ouvert = !j.cloture;
   const tickets = j.tickets.length
     ? j.tickets.map((t) => {
-      const art = t.lignes.map((l) => l.nom + (l.q > 1 ? ' ×' + l.q : '')).join(', ')
-        + (t.remise ? ` · remise ${fmtPct(t.remise.pct / 100)}` : '');
+      const art = t.lignes.map((l) => l.nom + (l.q > 1 ? ' ×' + l.q : '') + (l.remise ? ` (−${fmtPct(l.remise.pct / 100)})` : '')).join(', ')
+        + (t.remise ? ` · remise ticket ${fmtPct(t.remise.pct / 100)}` : '');
       return `<div class="t-ligne${t.annule ? ' annule' : ''}">
         <span class="num fort">${t.n}</span>
         <span class="num gris">${heure(t.h)}</span>
@@ -1385,7 +1503,8 @@ function detailJour(j) {
         <div class="vendus">${r.vendus.length
           ? r.vendus.map((v) => `<div class="vendu"><span class="coupe">${esc(v.nom)}</span><span class="d gris num">×${v.q}</span><b class="d num">${fmtEur(v.m)}</b></div>`).join('')
           : '<p class="info">Aucune vente.</p>'}</div>
-        ${r.nbRemises ? `<div class="vendus-remises"><span>Remises accordées<span class="gris num"> · ${pl(r.nbRemises, 'ticket')}</span></span><b class="num">−${fmtEur(r.remises)}</b></div>` : ''}
+        ${r.remises.nbArticles ? `<div class="vendus-remises"><span>Remises sur articles<span class="gris num"> · ${pl(r.remises.nbArticles, 'ligne')}</span></span><b class="num">−${fmtEur(r.remises.articles)}</b></div>` : ''}
+        ${r.remises.nbTickets ? `<div class="vendus-remises"><span>Remises sur tickets<span class="gris num"> · ${pl(r.remises.nbTickets, 'ticket')}</span></span><b class="num">−${fmtEur(r.remises.tickets)}</b></div>` : ''}
       </section>
     </div>
     <section class="tableau tickets" aria-labelledby="t-tickets">
@@ -1594,10 +1713,13 @@ function lignesVentes(jours) {
       const statut = t.annule ? 'Annulé' : 'Valide';
       t.lignes.forEach((l) => {
         lignes.push([date, t.n, heure(t.h), MODE_LABEL[t.mode] || 'Autre', l.ref || '', l.nom, l.q, argent(l.pa), argent(l.pv), argent(l.pv * l.q), statut]);
+        if (l.remise) {
+          lignes.push([date, t.n, heure(t.h), MODE_LABEL[t.mode] || 'Autre', l.ref || '', `Remise ${fmtNombre(l.remise.pct)} % · ${l.nom}`, '', '', '', argent(-l.remise.montant), statut]);
+        }
       });
       // La remise forme sa propre ligne, en négatif : la somme de la colonne Montant reste juste.
       if (t.remise) {
-        lignes.push([date, t.n, heure(t.h), MODE_LABEL[t.mode] || 'Autre', '', `Remise ${fmtNombre(t.remise.pct)} %`, '', '', '', argent(-t.remise.montant), statut]);
+        lignes.push([date, t.n, heure(t.h), MODE_LABEL[t.mode] || 'Autre', '', `Remise ticket ${fmtNombre(t.remise.pct)} %`, '', '', '', argent(-t.remise.montant), statut]);
       }
     });
   });
@@ -1759,7 +1881,23 @@ const ACTIONS = {
     $('#tuiles').innerHTML = tuiles();
   },
   ajouter: (el) => ajouterAuTicket(el.dataset.id),
-  retirer: (el) => retirerDuTicket(el.dataset.id),
+  'plus-ligne': (el) => changerQteLigne(el.dataset.cle, 1),
+  'moins-ligne': (el) => changerQteLigne(el.dataset.cle, -1),
+  'remise-ligne': (el) => dialogueRemiseLigne(el.dataset.cle),
+  'remise-n': (el) => {
+    const e = ui.remiseEdition;
+    e.n = Math.min(e.qMax, Math.max(1, e.n + Number(el.dataset.sens)));
+    majCompteurRemise();
+    majApercuRemise();
+  },
+  'retirer-remise-ligne': () => {
+    const ligne = ui.caisse.lignes.find((l) => l.cle === (ui.remiseEdition || {}).cle);
+    if (ligne) ligne.remise = null;
+    regrouperLignes();
+    sauverBrouillon();
+    fermerModale();
+    majCaisse();
+  },
   mode: (el) => {
     ui.caisse.mode = el.dataset.mode;
     sauverBrouillon();
@@ -1836,7 +1974,7 @@ let minuterieNom = null;
 const SAISIES = {
   'recherche-stock': (el) => { ui.q = el.value; $('#liste-stock').innerHTML = lignesStock(); },
   'recherche-caisse': (el) => { ui.caisse.q = el.value; $('#tuiles').innerHTML = tuiles(); },
-  remise: (el) => { $('#remise-apercu').textContent = apercuRemise(ui.remiseBrut, lireNombre(el.value)); },
+  remise: () => majApercuRemise(),
   fiche: (el) => {
     const champ = el.dataset.champ;
     if (champ === 'qte' || champ === 'seuil') ui.fiche[champ] = lireEntier(el.value);
@@ -1926,7 +2064,9 @@ async function demarrer() {
   etat.meta = { derniereSauvegarde: null, ...(d.meta || {}) };
   majToutesPhotos();
   if (d.brouillon && Array.isArray(d.brouillon.lignes)) {
-    ui.caisse.lignes = d.brouillon.lignes.filter((l) => article(l.id));
+    // Les brouillons de la version 1.1 n’ont ni clé de ligne ni remise par article.
+    ui.caisse.lignes = d.brouillon.lignes.filter((l) => article(l.id))
+      .map((l) => ({ cle: l.cle || nouvelleCle(), id: l.id, q: l.q, remise: l.remise || null }));
     ui.caisse.mode = d.brouillon.mode || null;
     ui.caisse.remise = ui.caisse.lignes.length ? d.brouillon.remise || null : null;
   }

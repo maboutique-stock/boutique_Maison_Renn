@@ -1,7 +1,7 @@
 // Garde l'application disponible sans connexion.
 // À chaque mise en ligne d'une nouvelle version, changer CACHE (ex. 'boutique-1.1.1')
 // et VERSION dans index.html.
-const CACHE = 'boutique-1.1.0';
+const CACHE = 'boutique-1.2.0';
 const FICHIERS = ['./', './index.html', './manifest.webmanifest', './icone-180.png', './icone-192.png', './icone-512.png'];
 
 self.addEventListener('install', (e) => {
