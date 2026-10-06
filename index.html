@@ -123,6 +123,10 @@ svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-widt
 .t-corps { flex: 1; min-height: 0; overflow-y: auto; }
 .t-corps .t-ligne { width: 100%; min-height: 56px; border: 0; border-top: 1px solid var(--trait-doux); background: transparent; color: var(--encre); font-size: 15px; text-align: left; }
 .t-ligne .d { text-align: right; }
+.t-article { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.vignette { width: 44px; height: 44px; flex-shrink: 0; border-radius: 10px; object-fit: cover; background: var(--panneau); }
+.vignette.sans-photo { display: flex; align-items: center; justify-content: center; color: #9C958A; }
+.vignette.sans-photo svg.i { width: 20px; height: 20px; }
 .t-nom { display: flex; flex-direction: column; min-width: 0; }
 .t-nom b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .t-nom small { font-size: 12.5px; color: var(--gris); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -161,6 +165,14 @@ svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-widt
 .fiche { display: flex; align-items: flex-start; gap: 16px; }
 .fiche-col1 { width: 360px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
 .fiche-col2 { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.photo-boite { position: relative; width: 136px; height: 136px; flex-shrink: 0; margin-top: 26px; }
+.photo-choix { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 8px; border-radius: 12px; border: 1px solid var(--champ); background: var(--surface); color: var(--gris); font-size: 13px; font-weight: 500; text-align: center; overflow: hidden; }
+.photo-choix.sans-photo { border: 1.5px dashed var(--champ); background: var(--panneau2); }
+.photo-choix.sans-photo svg.i { width: 28px; height: 28px; }
+.photo-choix img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.photo-badge { position: absolute; left: 6px; bottom: 6px; padding: 2px 8px; border-radius: 999px; background: rgba(28, 27, 25, 0.7); color: #FFFFFF; font-size: 12px; font-weight: 600; }
+.photo-retirer { position: absolute; top: -12px; right: -12px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 18px; border: 1px solid var(--champ); background: var(--surface); color: var(--encre); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
+.photo-retirer svg.i { width: 16px; height: 16px; }
 .calcul { display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; border-radius: 14px; background: var(--papier); }
 .calcul .l, .ligne-info { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; }
 .calcul hr { height: 1px; margin: 0; border: 0; background: var(--trait); }
@@ -215,6 +227,13 @@ svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-widt
 .ligne .mt { width: 78px; flex-shrink: 0; text-align: right; font-size: 15px; font-weight: 600; }
 .ticket-vide { height: 100%; min-height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--gris); font-size: 15px; text-align: center; }
 .ticket-vide svg.i { width: 32px; height: 32px; }
+.ticket-remise { display: flex; flex-direction: column; gap: 2px; padding: 8px 22px; border-top: 1px solid var(--trait-doux); }
+.ticket-remise .l { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 15px; }
+.ticket-remise .l:first-child { min-height: 28px; color: var(--encre2); }
+.lien-remise { flex: 1; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0; border: 0; background: none; color: var(--accent); font-size: 15px; font-weight: 600; text-align: left; }
+.lien-remise svg.i, .btn-remise svg.i { width: 18px; height: 18px; }
+.remise-mt { color: var(--accent); font-weight: 600; }
+.btn-remise { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 44px; border-radius: 12px; border: 1.5px dashed var(--champ); background: transparent; color: var(--encre2); font-size: 15px; font-weight: 600; }
 .ticket-total { display: flex; align-items: baseline; justify-content: space-between; padding: 16px 22px; border-top: 1px solid var(--trait); background: var(--panneau2); }
 .ticket-total span { font-size: 17px; font-weight: 600; }
 .ticket-total b { font-family: var(--serif); font-size: 34px; font-weight: 600; color: var(--vert); }
@@ -250,6 +269,8 @@ svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-widt
 .vendus { max-height: 160px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
 .vendu { display: grid; grid-template-columns: minmax(0, 1fr) 40px 84px; gap: 8px; font-size: 14px; }
 .vendu .d { text-align: right; }
+.vendus-remises { display: flex; justify-content: space-between; gap: 8px; padding-top: 8px; border-top: 1px solid var(--trait-doux); font-size: 14px; }
+.vendus-remises b { color: var(--accent); }
 .tableau.tickets { flex: none; }
 .tickets h3 { margin: 0; padding: 12px 16px 8px; font-size: 15px; font-weight: 600; }
 .tickets .t-ligne { grid-template-columns: 40px 52px minmax(0, 1fr) 120px 88px 44px; min-height: 48px; font-size: 14px; border-top: 1px solid var(--trait-doux); }
@@ -325,11 +346,12 @@ svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-widt
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div class="maj" id="maj" hidden><span>Une nouvelle version est disponible.</span><button type="button" data-action="maj">Mettre à jour</button></div>
 <input type="file" id="fichier-restauration" accept=".json,application/json" hidden>
+<input type="file" id="fichier-photo" accept="image/*" hidden>
 <script>
 (() => {
 'use strict';
 
-const VERSION = '1.0.0';
+const VERSION = '1.1.0';
 
 /* ---------- Constantes ---------- */
 
@@ -363,7 +385,9 @@ const ICONES = {
   carte: '<rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>',
   cheque: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
   autre: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
-  croix: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'
+  croix: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+  photo: '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+  pourcent: '<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>'
 };
 const ico = (nom, taille) => `<svg class="i" viewBox="0 0 24 24"${taille ? ` style="width:${taille}px;height:${taille}px"` : ''} aria-hidden="true">${ICONES[nom]}</svg>`;
 
@@ -374,6 +398,7 @@ const fmtEur = (n) => r2(n).toLocaleString('fr-FR', { minimumFractionDigits: 2, 
 const fmtPct = (t) => (Math.round(t * 1000) / 10).toLocaleString('fr-FR') + ' %';
 const fmtCoef = (c) => c.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const fmtSaisie = (n) => n.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false });
+const fmtNombre = (n) => n.toLocaleString('fr-FR', { maximumFractionDigits: 2, useGrouping: false });
 const lireNombre = (s) => {
   const t = String(s ?? '').replace(/[\s  €]/g, '').replace(',', '.');
   return t === '' ? NaN : Number(t);
@@ -402,12 +427,16 @@ const libelleArrondi = (pas) => (pas === 100 ? 'à l’euro supérieur' : `aux $
 
 /* ---------- État ---------- */
 
-const etat = { reglages: { ...REGLAGES_DEFAUT }, articles: [], jours: [], meta: { derniereSauvegarde: null } };
+// photos : identifiant d’article → image JPEG réduite, en data URL (exportée telle quelle dans la sauvegarde).
+const etat = { reglages: { ...REGLAGES_DEFAUT }, articles: [], jours: [], photos: {}, meta: { derniereSauvegarde: null } };
+// Adresses blob: des photos, pour l’affichage : bien plus légères à insérer dans la page que les data URL.
+const photoURL = {};
+const caisseVide = () => ({ q: '', cat: 'Toutes', lignes: [], mode: null, remise: null, message: '' });
 const ui = {
   vue: 'stock',
   q: '', cat: 'Toutes',
   fiche: null,
-  caisse: { q: '', cat: 'Toutes', lignes: [], mode: null, message: '' },
+  caisse: caisseVide(),
   jourSel: null,
   actionModale: null,
   regMaj: null, majDemandee: false
@@ -424,15 +453,22 @@ const Store = {
     return new Promise((resolve) => {
       if (!('indexedDB' in window)) { this.secours = true; resolve(); return; }
       let req;
-      try { req = indexedDB.open('boutique', 1); } catch (e) { this.secours = true; resolve(); return; }
+      // Version 2 : ajout du magasin « photos ». Les données de la version 1 sont conservées.
+      try { req = indexedDB.open('boutique', 2); } catch (e) { this.secours = true; resolve(); return; }
       req.onupgradeneeded = () => {
         const db = req.result;
         if (!db.objectStoreNames.contains('kv')) db.createObjectStore('kv');
         if (!db.objectStoreNames.contains('jours')) db.createObjectStore('jours', { keyPath: 'date' });
+        if (!db.objectStoreNames.contains('photos')) db.createObjectStore('photos');
       };
-      req.onsuccess = () => { this.db = req.result; resolve(); };
+      req.onsuccess = () => {
+        this.db = req.result;
+        this.db.onversionchange = () => { this.db.close(); toast('L’application a été mise à jour ailleurs : rechargez-la.', true); };
+        resolve();
+      };
       req.onerror = () => { this.secours = true; resolve(); };
-      req.onblocked = () => { this.secours = true; resolve(); };
+      // Une ancienne fenêtre de l’application bloque la mise à niveau : on attend qu’elle se ferme.
+      req.onblocked = () => toast('Fermez les autres fenêtres de l’application pour terminer la mise à jour.', true);
     });
   },
 
@@ -442,22 +478,24 @@ const Store = {
 
   async charger() {
     if (this.secours) {
+      const photos = {};
+      Object.keys(localStorage).filter((k) => k.startsWith('boutique.photo.')).forEach((k) => { photos[k.slice(15)] = localStorage.getItem(k); });
       return {
         reglages: this.lireLS('reglages', null), articles: this.lireLS('articles', []), meta: this.lireLS('meta', null),
-        brouillon: this.lireLS('brouillon', null), jours: this.lireLS('jours', [])
+        brouillon: this.lireLS('brouillon', null), jours: this.lireLS('jours', []), photos
       };
     }
-    const tx = this.db.transaction(['kv', 'jours'], 'readonly');
+    const tx = this.db.transaction(['kv', 'jours', 'photos'], 'readonly');
     const kv = tx.objectStore('kv');
-    const lire = (store, cle) => new Promise((res, rej) => {
-      const r = cle === undefined ? store.getAll() : store.get(cle);
-      r.onsuccess = () => res(r.result);
-      r.onerror = () => rej(r.error);
-    });
-    const [reglages, articles, meta, brouillon, jours] = await Promise.all([
-      lire(kv, 'reglages'), lire(kv, 'articles'), lire(kv, 'meta'), lire(kv, 'brouillon'), lire(tx.objectStore('jours'))
+    const ps = tx.objectStore('photos');
+    const attendre = (r) => new Promise((res, rej) => { r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
+    const [reglages, articles, meta, brouillon, jours, ids, images] = await Promise.all([
+      attendre(kv.get('reglages')), attendre(kv.get('articles')), attendre(kv.get('meta')), attendre(kv.get('brouillon')),
+      attendre(tx.objectStore('jours').getAll()), attendre(ps.getAllKeys()), attendre(ps.getAll())
     ]);
-    return { reglages, articles: articles || [], meta, brouillon, jours: jours || [] };
+    const photos = {};
+    ids.forEach((id, i) => { photos[id] = images[i]; });
+    return { reglages, articles: articles || [], meta, brouillon, jours: jours || [], photos };
   },
 
   echec(e) {
@@ -489,22 +527,41 @@ const Store = {
     this.transaction(['jours'], (tx) => tx.objectStore('jours').put(jour));
   },
 
+  ecrirePhoto(id, image) {
+    if (this.secours) {
+      try {
+        if (image) localStorage.setItem('boutique.photo.' + id, image);
+        else localStorage.removeItem('boutique.photo.' + id);
+      } catch (e) { this.echec(e); }
+      return;
+    }
+    this.transaction(['photos'], (tx) => {
+      const ps = tx.objectStore('photos');
+      if (image) ps.put(image, id); else ps.delete(id);
+    });
+  },
+
   remplacerTout() {
     if (this.secours) {
       ['reglages', 'articles', 'meta', 'jours'].forEach((k) => this.ecrire(k, etat[k]));
       this.ecrire('brouillon', null);
+      Object.keys(localStorage).filter((k) => k.startsWith('boutique.photo.')).forEach((k) => localStorage.removeItem(k));
+      Object.entries(etat.photos).forEach(([id, image]) => this.ecrirePhoto(id, image));
       return Promise.resolve();
     }
     return new Promise((resolve, reject) => {
-      const tx = this.db.transaction(['kv', 'jours'], 'readwrite');
+      const tx = this.db.transaction(['kv', 'jours', 'photos'], 'readwrite');
       const kv = tx.objectStore('kv');
       const js = tx.objectStore('jours');
+      const ps = tx.objectStore('photos');
       kv.clear();
       js.clear();
+      ps.clear();
       kv.put(etat.reglages, 'reglages');
       kv.put(etat.articles, 'articles');
       kv.put(etat.meta, 'meta');
       etat.jours.forEach((j) => js.put(j));
+      Object.entries(etat.photos).forEach(([id, image]) => ps.put(image, id));
       tx.oncomplete = () => resolve();
       tx.onerror = () => reject(tx.error);
       tx.onabort = () => reject(tx.error);
@@ -516,7 +573,55 @@ const sauverArticles = () => Store.ecrire('articles', etat.articles);
 const sauverReglages = () => Store.ecrire('reglages', etat.reglages);
 const sauverMeta = () => Store.ecrire('meta', etat.meta);
 const sauverJour = (j) => Store.ecrireJour(j);
-const sauverBrouillon = () => Store.ecrire('brouillon', { lignes: ui.caisse.lignes, mode: ui.caisse.mode });
+const sauverBrouillon = () => Store.ecrire('brouillon', { lignes: ui.caisse.lignes, mode: ui.caisse.mode, remise: ui.caisse.remise });
+
+/* ---------- Photos des articles ---------- */
+
+// Réduit la photo (400 px au plus grand côté, JPEG) pour ménager la place sur l’iPad.
+function preparerPhoto(fichier) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(fichier);
+    const img = new Image();
+    img.onload = () => {
+      const ratio = Math.min(1, 400 / Math.max(img.naturalWidth, img.naturalHeight));
+      const l = Math.max(1, Math.round(img.naturalWidth * ratio));
+      const h = Math.max(1, Math.round(img.naturalHeight * ratio));
+      const toile = document.createElement('canvas');
+      toile.width = l;
+      toile.height = h;
+      const ctx = toile.getContext('2d');
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, l, h);
+      ctx.drawImage(img, 0, 0, l, h);
+      URL.revokeObjectURL(url);
+      resolve(toile.toDataURL('image/jpeg', 0.8));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('image illisible')); };
+    img.src = url;
+  });
+}
+
+function majPhotoURL(id) {
+  if (photoURL[id]) { URL.revokeObjectURL(photoURL[id]); delete photoURL[id]; }
+  const image = etat.photos[id];
+  if (!image) return;
+  try {
+    const [tete, donnees] = image.split(',');
+    const binaire = atob(donnees);
+    const octets = new Uint8Array(binaire.length);
+    for (let i = 0; i < binaire.length; i += 1) octets[i] = binaire.charCodeAt(i);
+    photoURL[id] = URL.createObjectURL(new Blob([octets], { type: (tete.match(/^data:([^;]+)/) || [])[1] || 'image/jpeg' }));
+  } catch (e) { /* photo illisible : l’article s’affiche sans visuel */ }
+}
+
+function majToutesPhotos() {
+  Object.keys(photoURL).forEach((id) => { URL.revokeObjectURL(photoURL[id]); delete photoURL[id]; });
+  Object.keys(etat.photos).forEach(majPhotoURL);
+}
+
+const vignette = (a) => (photoURL[a.id]
+  ? `<img class="vignette" src="${photoURL[a.id]}" alt="">`
+  : `<span class="vignette sans-photo">${ico('stock')}</span>`);
 
 /* ---------- Règles métier ---------- */
 
@@ -534,7 +639,16 @@ const categories = () => [...new Set(actifs().map((a) => a.cat).filter(Boolean))
 const etatStock = (a) => (a.qte <= 0 ? 'rupture' : a.qte <= a.seuil ? 'bas' : 'ok');
 const jourOuvert = () => etat.jours.find((j) => !j.cloture) || null;
 const jourDu = (date) => etat.jours.find((j) => j.date === date) || null;
-const totalTicket = (t) => r2(t.lignes.reduce((s, l) => s + r2(l.pv * l.q), 0));
+// Montant encaissé : total des lignes, moins la remise éventuelle du ticket.
+const totalTicket = (t) => r2(t.lignes.reduce((s, l) => s + r2(l.pv * l.q), 0) - (t.remise ? t.remise.montant : 0));
+// Remise calculée en centimes entiers et arrondie au centime le plus proche (8,655 € → 8,66 €).
+const montantRemise = (brut, pct) => (pct ? Math.round((Math.round(brut * 100) * Math.round(pct * 100)) / 10000) / 100 : 0);
+const calculTicket = (lignes, pct) => {
+  const brut = r2(lignes.reduce((s, l) => s + r2(pv(l.a) * l.q), 0));
+  const montant = montantRemise(brut, pct);
+  return { brut, montant, net: r2(brut - montant) };
+};
+const lignesTicket = () => ui.caisse.lignes.map((l) => ({ ...l, a: article(l.id) })).filter((l) => l.a);
 const articleVendu = (id) => etat.jours.some((j) => j.tickets.some((t) => t.lignes.some((l) => l.id === id)));
 const qteDansTicket = (id) => (ui.caisse.lignes.find((l) => l.id === id) || { q: 0 }).q;
 const nouvelId = () => 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
@@ -543,12 +657,13 @@ function resumeJour(j) {
   const modes = {};
   MODES.forEach((m) => { modes[m.id] = { n: 0, m: 0 }; });
   const vendus = {};
-  let total = 0, cout = 0, units = 0, n = 0, annules = 0;
+  let total = 0, cout = 0, units = 0, n = 0, annules = 0, remises = 0, nbRemises = 0;
   j.tickets.forEach((t) => {
     if (t.annule) { annules += 1; return; }
     n += 1;
     const tt = totalTicket(t);
     total += tt;
+    if (t.remise) { remises += t.remise.montant; nbRemises += 1; }
     const m = modes[t.mode] || modes.AUT;
     m.n += 1;
     m.m += tt;
@@ -561,7 +676,7 @@ function resumeJour(j) {
     });
   });
   return {
-    total: r2(total), cout, marge: total - cout, units, n, annules, modes,
+    total: r2(total), cout, marge: total - cout, units, n, annules, modes, remises: r2(remises), nbRemises,
     vendus: Object.values(vendus).sort((a, b) => b.q - a.q || b.m - a.m)
   };
 }
@@ -717,7 +832,7 @@ function lignesStock() {
     const e = etatStock(a);
     const badge = e === 'rupture' ? 'Rupture' : e === 'bas' ? `${a.qte} · bas` : a.qte;
     return `<button type="button" class="t-ligne" data-action="ouvrir-article" data-id="${a.id}">
-      <span class="t-nom"><b>${esc(a.nom)}</b><small>${esc([a.ref, a.cat].filter(Boolean).join(' · ') || 'Sans catégorie')}</small></span>
+      <span class="t-article">${vignette(a)}<span class="t-nom"><b>${esc(a.nom)}</b><small>${esc([a.ref, a.cat].filter(Boolean).join(' · ') || 'Sans catégorie')}</small></span></span>
       <span class="d num">${fmtEur(a.pa)}</span>
       <span class="d num gris col-coef">×${fmtCoef(a.coef)}</span>
       <span class="d num fort">${fmtEur(p)}</span>
@@ -753,6 +868,8 @@ function ouvrirFiche(id) {
   ui.fiche = a
     ? { id: a.id, nom: a.nom, ref: a.ref || '', cat: a.cat || '', pa: fmtSaisie(a.pa), coef: fmtSaisie(a.coef), qte: a.qte, seuil: a.seuil, archive: !!a.archive }
     : { id: null, nom: '', ref: '', cat: ui.cat !== 'Toutes' && ui.cat !== '__archives' ? ui.cat : '', pa: '', coef: fmtSaisie(etat.reglages.coef), qte: 0, seuil: 3, archive: false };
+  ui.fiche.photo = (a && etat.photos[a.id]) || null;
+  ui.fiche.photoModifiee = false;
   ui.vue = 'article';
   render();
   vue.querySelector('.page').scrollTop = 0;
@@ -797,17 +914,20 @@ function vueArticle() {
       <div class="fiche-col1">
         <section class="carte" aria-labelledby="t-ident">
           <h2 id="t-ident">Identification</h2>
-          <label class="champ" id="champ-nom">Désignation
-            <input type="text" data-input="fiche" data-champ="nom" value="${esc(f.nom)}" autocomplete="off" enterkeyhint="next">
-          </label>
-          <div class="rangee">
-            <label class="champ" style="width:128px;flex-shrink:0">Référence
-              <input type="text" data-input="fiche" data-champ="ref" value="${esc(f.ref)}" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false">
-            </label>
-            <label class="champ" style="flex:1">Catégorie
-              <input type="text" data-input="fiche" data-champ="cat" value="${esc(f.cat)}" list="liste-categories" autocomplete="off">
-            </label>
+          <div class="rangee" style="align-items:flex-start">
+            <div class="photo-boite" id="fiche-photo">${photoFiche()}</div>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px">
+              <label class="champ" id="champ-nom">Désignation
+                <input type="text" data-input="fiche" data-champ="nom" value="${esc(f.nom)}" autocomplete="off" enterkeyhint="next">
+              </label>
+              <label class="champ">Référence
+                <input type="text" data-input="fiche" data-champ="ref" value="${esc(f.ref)}" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false">
+              </label>
+            </div>
           </div>
+          <label class="champ">Catégorie
+            <input type="text" data-input="fiche" data-champ="cat" value="${esc(f.cat)}" list="liste-categories" autocomplete="off">
+          </label>
           <datalist id="liste-categories">${categories().map((c) => `<option value="${esc(c)}">`).join('')}</datalist>
         </section>
         <section class="carte" aria-labelledby="t-stock">
@@ -835,6 +955,14 @@ function vueArticle() {
       </div>
     </div>
   </section>`;
+}
+
+function photoFiche() {
+  if (!ui.fiche.photo) {
+    return `<button type="button" class="photo-choix sans-photo" data-action="choisir-photo">${ico('photo')}<span>Ajouter une photo</span></button>`;
+  }
+  return `<button type="button" class="photo-choix" data-action="choisir-photo" aria-label="Changer la photo"><img src="${ui.fiche.photo}" alt=""><span class="photo-badge">Changer</span></button>
+    <button type="button" class="photo-retirer" data-action="retirer-photo" aria-label="Retirer la photo">${ico('croix')}</button>`;
 }
 
 function prixFiche() {
@@ -910,12 +1038,18 @@ function enregistrerArticle() {
     qte: Math.max(0, Math.floor(f.qte)), seuil: Math.max(0, Math.floor(f.seuil)),
     maj: maintenant()
   };
+  const id = f.id || nouvelId();
   if (f.id) {
     Object.assign(article(f.id), donnees);
   } else {
-    etat.articles.push({ id: nouvelId(), ...donnees, archive: false, cree: donnees.maj });
+    etat.articles.push({ id, ...donnees, archive: false, cree: donnees.maj });
   }
   sauverArticles();
+  if (f.photoModifiee) {
+    if (f.photo) etat.photos[id] = f.photo; else delete etat.photos[id];
+    Store.ecrirePhoto(id, f.photo);
+    majPhotoURL(id);
+  }
   toast(f.id ? 'Article enregistré.' : 'Article créé.');
   aller('stock');
 }
@@ -1022,9 +1156,23 @@ function tuiles() {
 }
 
 function ticketEnCours(j) {
-  const lignes = ui.caisse.lignes.map((l) => ({ ...l, a: article(l.id) })).filter((l) => l.a);
-  const total = r2(lignes.reduce((s, l) => s + r2(pv(l.a) * l.q), 0));
+  const lignes = lignesTicket();
+  const remise = lignes.length ? ui.caisse.remise : null;
+  const { brut, montant, net } = calculTicket(lignes, remise);
   const units = lignes.reduce((s, l) => s + l.q, 0);
+  let blocRemise = '';
+  if (lignes.length && remise) {
+    blocRemise = `<div class="ticket-remise">
+      <div class="l"><span>Sous-total</span><span class="num">${fmtEur(brut)}</span></div>
+      <div class="l">
+        <button type="button" class="lien-remise" data-action="remise">${ico('pourcent')}Remise ${fmtPct(remise / 100)}</button>
+        <span class="num remise-mt">−${fmtEur(montant)}</span>
+        <button type="button" class="icone-btn" data-action="retirer-remise" aria-label="Retirer la remise">${ico('croix', 18)}</button>
+      </div>
+    </div>`;
+  } else if (lignes.length) {
+    blocRemise = `<div class="ticket-remise"><button type="button" class="btn-remise" data-action="remise">${ico('pourcent')}Ajouter une remise</button></div>`;
+  }
   const pret = lignes.length > 0 && !!ui.caisse.mode;
   const corps = lignes.length
     ? lignes.map((l) => {
@@ -1043,7 +1191,8 @@ function ticketEnCours(j) {
   return `<div class="ticket-tete"><h2 class="num">Ticket n° ${j.tickets.length + 1}</h2><span class="gris num">${units ? pl(units, 'article') : 'Vide'}</span></div>
     ${ui.caisse.message ? `<div class="message-ok" role="status">${ico('ok')}<span class="num">${esc(ui.caisse.message)}</span></div>` : ''}
     <div class="lignes">${corps}</div>
-    <div class="ticket-total"><span>Total</span><b class="num">${fmtEur(total)}</b></div>
+    ${blocRemise}
+    <div class="ticket-total"><span>Total</span><b class="num">${fmtEur(net)}</b></div>
     <div class="paiement">
       <span id="l-mode">Mode de paiement</span>
       <div class="modes" role="group" aria-labelledby="l-mode">
@@ -1082,7 +1231,46 @@ function retirerDuTicket(id) {
   if (!ligne) return;
   ligne.q -= 1;
   if (ligne.q <= 0) ui.caisse.lignes = ui.caisse.lignes.filter((l) => l.id !== id);
+  if (!ui.caisse.lignes.length) ui.caisse.remise = null;
   sauverBrouillon();
+  majCaisse();
+}
+
+const apercuRemise = (brut, pct) => {
+  if (!(pct > 0 && pct <= 100)) return 'Par exemple, tapez 10 pour une remise de 10 %.';
+  const montant = montantRemise(brut, pct);
+  return `Remise : −${fmtEur(montant)} · nouveau total : ${fmtEur(brut - montant)}`;
+};
+
+function dialogueRemise() {
+  const lignes = lignesTicket();
+  if (!lignes.length) return;
+  const { brut } = calculTicket(lignes, 0);
+  ui.remiseBrut = brut;
+  ouvrirModale(`<div class="dialogue" role="dialog" aria-modal="true" aria-labelledby="d-titre">
+    <h2 id="d-titre">Remise sur le ticket</h2>
+    <p>Sous-total : <b class="num">${fmtEur(brut)}</b>. Saisissez le pourcentage de remise accordé au client.</p>
+    <label class="champ gros">Pourcentage de remise
+      <span class="unite"><input type="text" inputmode="decimal" class="num" id="remise-pct" data-input="remise" value="${ui.caisse.remise ? fmtNombre(ui.caisse.remise) : ''}" placeholder="10" autocomplete="off" enterkeyhint="done" data-focus><span>%</span></span>
+    </label>
+    <p class="info num" id="remise-apercu">${apercuRemise(brut, ui.caisse.remise)}</p>
+    <div class="boutons">
+      <button type="button" class="btn" data-action="fermer-modale">Annuler</button>
+      <button type="button" class="btn btn-principal" data-action="appliquer-remise">Appliquer la remise</button>
+    </div>
+  </div>`);
+}
+
+function appliquerRemise() {
+  const pct = lireNombre($('#remise-pct').value);
+  if (!(pct > 0 && pct <= 100)) {
+    toast('Indiquez un pourcentage de remise entre 0 et 100, par exemple 10.', true);
+    return;
+  }
+  ui.caisse.remise = r2(pct);
+  ui.caisse.message = '';
+  sauverBrouillon();
+  fermerModale();
   majCaisse();
 }
 
@@ -1095,6 +1283,8 @@ function validerTicket() {
     const a = article(l.id);
     if (a.qte < l.q) { toast(`Stock insuffisant pour « ${a.nom} » : ${a.qte} restant.`, true); return; }
   }
+  const pct = ui.caisse.remise;
+  const { montant } = calculTicket(lignesTicket(), pct);
   const ticket = {
     n: j.tickets.length + 1,
     h: maintenant(),
@@ -1104,14 +1294,16 @@ function validerTicket() {
       a.qte -= l.q;
       return { id: a.id, ref: a.ref || '', nom: a.nom, pa: a.pa, pv: pv(a), q: l.q };
     }),
+    remise: pct ? { pct, montant } : null,
     annule: null
   };
   j.tickets.push(ticket);
   sauverJour(j);
   sauverArticles();
-  ui.caisse.message = `Ticket n° ${ticket.n} enregistré · ${fmtEur(totalTicket(ticket))} · ${MODE_LABEL[ticket.mode]}`;
+  ui.caisse.message = `Ticket n° ${ticket.n} enregistré · ${fmtEur(totalTicket(ticket))}${pct ? ` (remise ${fmtPct(pct / 100)})` : ''} · ${MODE_LABEL[ticket.mode]}`;
   ui.caisse.lignes = [];
   ui.caisse.mode = null;
+  ui.caisse.remise = null;
   sauverBrouillon();
   majCaisse();
 }
@@ -1147,7 +1339,8 @@ function detailJour(j) {
   const ouvert = !j.cloture;
   const tickets = j.tickets.length
     ? j.tickets.map((t) => {
-      const art = t.lignes.map((l) => l.nom + (l.q > 1 ? ' ×' + l.q : '')).join(', ');
+      const art = t.lignes.map((l) => l.nom + (l.q > 1 ? ' ×' + l.q : '')).join(', ')
+        + (t.remise ? ` · remise ${fmtPct(t.remise.pct / 100)}` : '');
       return `<div class="t-ligne${t.annule ? ' annule' : ''}">
         <span class="num fort">${t.n}</span>
         <span class="num gris">${heure(t.h)}</span>
@@ -1192,6 +1385,7 @@ function detailJour(j) {
         <div class="vendus">${r.vendus.length
           ? r.vendus.map((v) => `<div class="vendu"><span class="coupe">${esc(v.nom)}</span><span class="d gris num">×${v.q}</span><b class="d num">${fmtEur(v.m)}</b></div>`).join('')
           : '<p class="info">Aucune vente.</p>'}</div>
+        ${r.nbRemises ? `<div class="vendus-remises"><span>Remises accordées<span class="gris num"> · ${pl(r.nbRemises, 'ticket')}</span></span><b class="num">−${fmtEur(r.remises)}</b></div>` : ''}
       </section>
     </div>
     <section class="tableau tickets" aria-labelledby="t-tickets">
@@ -1221,6 +1415,7 @@ function cloturer(date) {
   sauverJour(j);
   ui.caisse.lignes = [];
   ui.caisse.mode = null;
+  ui.caisse.remise = null;
   ui.caisse.message = '';
   sauverBrouillon();
   ui.jourSel = date;
@@ -1370,7 +1565,7 @@ const versCSV = (lignes) => '﻿' + lignes.map((l) => l.map(cellule).join(';')).
 function exportJSON() {
   const donnees = {
     application: FORMAT_SAUVEGARDE, format: 1, version: VERSION, exporte: maintenant(),
-    reglages: etat.reglages, articles: etat.articles, jours: etat.jours
+    reglages: etat.reglages, articles: etat.articles, jours: etat.jours, photos: etat.photos
   };
   partagerFichier(`${prefixe()}-sauvegarde-${auj()}.json`, JSON.stringify(donnees), 'application/json').then((ok) => {
     if (!ok) return;
@@ -1395,9 +1590,16 @@ function lignesVentes(jours) {
   const lignes = [['Date', 'Ticket', 'Heure', 'Paiement', 'Référence', 'Article', 'Quantité', 'Prix d’achat', 'Prix de vente', 'Montant', 'Statut']];
   [...jours].sort((a, b) => a.date.localeCompare(b.date)).forEach((j) => {
     const date = versDate(j.date).toLocaleDateString('fr-FR');
-    j.tickets.forEach((t) => t.lignes.forEach((l) => {
-      lignes.push([date, t.n, heure(t.h), MODE_LABEL[t.mode] || 'Autre', l.ref || '', l.nom, l.q, argent(l.pa), argent(l.pv), argent(l.pv * l.q), t.annule ? 'Annulé' : 'Valide']);
-    }));
+    j.tickets.forEach((t) => {
+      const statut = t.annule ? 'Annulé' : 'Valide';
+      t.lignes.forEach((l) => {
+        lignes.push([date, t.n, heure(t.h), MODE_LABEL[t.mode] || 'Autre', l.ref || '', l.nom, l.q, argent(l.pa), argent(l.pv), argent(l.pv * l.q), statut]);
+      });
+      // La remise forme sa propre ligne, en négatif : la somme de la colonne Montant reste juste.
+      if (t.remise) {
+        lignes.push([date, t.n, heure(t.h), MODE_LABEL[t.mode] || 'Autre', '', `Remise ${fmtNombre(t.remise.pct)} %`, '', '', '', argent(-t.remise.montant), statut]);
+      }
+    });
   });
   return lignes;
 }
@@ -1438,8 +1640,16 @@ function restaurer(fichier) {
         etat.reglages = { ...REGLAGES_DEFAUT, ...d.reglages };
         etat.articles = d.articles;
         etat.jours = d.jours;
+        etat.photos = {};
+        // Les sauvegardes de la version 1.0 n’ont pas de photos.
+        if (d.photos && typeof d.photos === 'object') {
+          Object.entries(d.photos).forEach(([id, image]) => {
+            if (typeof image === 'string' && image.startsWith('data:image/')) etat.photos[id] = image;
+          });
+        }
+        majToutesPhotos();
         etat.meta = { derniereSauvegarde: d.exporte || null };
-        ui.caisse = { q: '', cat: 'Toutes', lignes: [], mode: null, message: '' };
+        ui.caisse = caisseVide();
         ui.q = '';
         ui.cat = 'Toutes';
         ui.jourSel = null;
@@ -1512,6 +1722,11 @@ const ACTIONS = {
       action: () => {
         etat.articles = etat.articles.filter((x) => x.id !== a.id);
         ui.caisse.lignes = ui.caisse.lignes.filter((l) => l.id !== a.id);
+        if (etat.photos[a.id]) {
+          delete etat.photos[a.id];
+          Store.ecrirePhoto(a.id, null);
+          majPhotoURL(a.id);
+        }
         sauverBrouillon();
         sauverArticles();
         toast('Article supprimé.');
@@ -1553,9 +1768,27 @@ const ACTIONS = {
   'vider-ticket': () => {
     ui.caisse.lignes = [];
     ui.caisse.mode = null;
+    ui.caisse.remise = null;
     ui.caisse.message = '';
     sauverBrouillon();
     majCaisse();
+  },
+  remise: () => dialogueRemise(),
+  'appliquer-remise': () => appliquerRemise(),
+  'retirer-remise': () => {
+    ui.caisse.remise = null;
+    sauverBrouillon();
+    majCaisse();
+  },
+  'choisir-photo': () => {
+    const input = $('#fichier-photo');
+    input.value = '';
+    input.click();
+  },
+  'retirer-photo': () => {
+    ui.fiche.photo = null;
+    ui.fiche.photoModifiee = true;
+    $('#fiche-photo').innerHTML = photoFiche();
   },
   'valider-ticket': () => validerTicket(),
   'voir-jour': (el) => { ui.jourSel = el.dataset.date; aller('journees'); },
@@ -1603,6 +1836,7 @@ let minuterieNom = null;
 const SAISIES = {
   'recherche-stock': (el) => { ui.q = el.value; $('#liste-stock').innerHTML = lignesStock(); },
   'recherche-caisse': (el) => { ui.caisse.q = el.value; $('#tuiles').innerHTML = tuiles(); },
+  remise: (el) => { $('#remise-apercu').textContent = apercuRemise(ui.remiseBrut, lireNombre(el.value)); },
   fiche: (el) => {
     const champ = el.dataset.champ;
     if (champ === 'qte' || champ === 'seuil') ui.fiche[champ] = lireEntier(el.value);
@@ -1634,8 +1868,22 @@ $('#fichier-restauration').addEventListener('change', (e) => {
   const f = e.target.files && e.target.files[0];
   if (f) restaurer(f);
 });
+$('#fichier-photo').addEventListener('change', async (e) => {
+  const f = e.target.files && e.target.files[0];
+  if (!f || !ui.fiche) return;
+  try {
+    ui.fiche.photo = await preparerPhoto(f);
+    ui.fiche.photoModifiee = true;
+    if (ui.vue === 'article') $('#fiche-photo').innerHTML = photoFiche();
+  } catch (err) {
+    toast('Cette image ne peut pas être lue. Essayez une autre photo.', true);
+  }
+});
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && !modale.hidden) fermerModale();
+  // Touche « OK » du clavier de l’iPad dans les fenêtres de saisie.
+  if (e.key === 'Enter' && e.target.id === 'remise-pct') { e.preventDefault(); appliquerRemise(); }
+  if (e.key === 'Enter' && e.target.id === 'entree-qte') { e.preventDefault(); ACTIONS['valider-entree'](); }
 });
 // Le jour peut changer pendant que l’application reste ouverte.
 document.addEventListener('visibilitychange', () => {
@@ -1674,10 +1922,13 @@ async function demarrer() {
   etat.reglages = { ...REGLAGES_DEFAUT, ...(d.reglages || {}) };
   etat.articles = d.articles || [];
   etat.jours = d.jours || [];
+  etat.photos = d.photos || {};
   etat.meta = { derniereSauvegarde: null, ...(d.meta || {}) };
+  majToutesPhotos();
   if (d.brouillon && Array.isArray(d.brouillon.lignes)) {
     ui.caisse.lignes = d.brouillon.lignes.filter((l) => article(l.id));
     ui.caisse.mode = d.brouillon.mode || null;
+    ui.caisse.remise = ui.caisse.lignes.length ? d.brouillon.remise || null : null;
   }
   ui.vue = jourOuvert() ? 'vente' : 'stock';
   render();

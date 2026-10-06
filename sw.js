@@ -1,10 +1,13 @@
 // Garde l'application disponible sans connexion.
-// À chaque mise en ligne d'une nouvelle version, changer CACHE (ex. 'boutique-1.0.1').
-const CACHE = 'boutique-1.0.0';
+// À chaque mise en ligne d'une nouvelle version, changer CACHE (ex. 'boutique-1.1.1')
+// et VERSION dans index.html.
+const CACHE = 'boutique-1.1.0';
 const FICHIERS = ['./', './index.html', './manifest.webmanifest', './icone-180.png', './icone-192.png', './icone-512.png'];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FICHIERS)));
+  // cache: 'reload' : on va chercher les fichiers sur le serveur, jamais dans le cache du navigateur,
+  // pour ne pas installer une ancienne copie de index.html.
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FICHIERS.map((f) => new Request(f, { cache: 'reload' })))));
 });
 
 self.addEventListener('activate', (e) => {
